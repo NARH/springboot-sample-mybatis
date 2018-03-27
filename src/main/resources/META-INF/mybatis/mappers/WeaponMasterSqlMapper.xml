@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2018, NARH https://github.com/NARH
+  All rights reserved.
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions are met:
+  * Redistributions of source code must retain the above copyright notice,
+  this list of conditions and the following disclaimer.
+  * Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+  * Neither the name of the copyright holder nor the names of its contributors
+  may be used to endorse or promote products derived from this software
+  without specific prior written permission.
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.narh.sample.mybatis.domain.mapper.WeaponMapper">
+
+  <resultMap id="WeaponResultMap" type="Weapon">
+    <id property="code"                 column="CODE"             jdbcType="CHAR"/>
+    <result property="name"             column="NAME"             jdbcType="VARCHAR"/>
+    <result property="strength"         column="STRENGTH"         jdbcType="NUMERIC"/>
+    <result property="curse"            column="CURSE"            jdbcType="BOOLEAN"/>
+    <association property="category"    column="CATEGORY"         javaType="Category"
+      select="com.github.narh.sample.mybatis.domain.mapper.WeaponCategoryMapper.findByCode"/>
+  </resultMap>
+
+  <resultMap id="InnerJoinWeaponResultMap" extends="WeaponResultMap" type="Weapon">
+    <association property="category"    column="CATEGORY"         javaType="Category"
+      resultMap="com.github.narh.sample.mybatis.domain.mapper.WeaponCategoryMapper.WeaponCategoryResultMap"
+      columnPrefix="category_">
+    </association>
+  </resultMap>
+
+  <sql id="WeaponMasterColumns">
+      ${prefix}CODE as ${alias}CODE
+    , ${prefix}NAME as ${alias}NAME
+    , ${prefix}STRENGTH as ${alias}STRENGTH
+    , ${prefix}CURSE as ${alias}CURSE
+    , ${prefix}CATEGORY as ${alias}CATEGORY
+  </sql>
+
+  <select id="findByCode" resultMap="WeaponResultMap">
+    select
+    <include refid="WeaponMasterColumns">
+      <property name="prefix" value=""/>
+      <property name="alias" value=""/>
+    </include>
+    from WEAPON_MASTER where CODE = #{code}
+  </select>
+
+  <select id="findByJob" resultMap="InnerJoinWeaponResultMap">
+    select
+    <include refid="WeaponMasterColumns">
+      <property name="prefix" value="weapon."/>
+      <property name="alias" value=""/>
+    </include>
+    ,
+    <include refid="com.github.narh.sample.mybatis.domain.mapper.WeaponCategoryMapper.WeaponCategoryColumns">
+      <property name="prefix" value="category."/>
+      <property name="alias" value="category_"/>
+    </include>
+    from WEAPON_MASTER as weapon
+    inner join WEAPON_CATEGORY as category on category.CODE = weapon.CATEGORY
+    <if test="null != job">
+    inner join JOB_CATEGORY_REFERENCE as ref on ref.CATEGORY = category.CODE and ref.job = #{job}
+    </if>
+    order by weapon.strength desc, weapon.code asc
+    <if test="_parameter.containsKey('limit') and null != limit and 0 &lt; limit">
+    limit #{limit}
+    </if>
+    <if test="_parameter.containsKey('offset') and null != offset and 0 &lt;= offset">
+    offset #{offset}
+    </if>
+  </select>
+
+  <select id="countByJob" resultType="long">
+    select count(*)
+    from WEAPON_MASTER as weapon
+    inner join WEAPON_CATEGORY as category on category.CODE = weapon.CATEGORY
+    <if test="null != job">
+    inner join JOB_CATEGORY_REFERENCE as ref on ref.CATEGORY = category.CODE and ref.job = #{job}
+    </if>
+  </select>
+</mapper>

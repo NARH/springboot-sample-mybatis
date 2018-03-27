@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<title>武器屋 武器一覧</title>
+<meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="author" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!--[if lt IE 9]>
+<script src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href=""/>
+<link href="/css/bukiya.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="container">
+  <div id="header" class="header">
+  </div>
+  <div id="body">
+    <div id="member_info" class="member_info">
+      <p>現在の強さ:member_info.strength</p>
+    </div>
+    <div id="weapon_list" class="weapon_list">
+      <table>
+        <tbody>
+          <tr>
+            <td></td>
+            <td><a href="WeaponDetail">weapon.name</a></td>
+            <td>weapon.categoryName</td>
+            <td>weapon.strength + member_info.strength (+ weapon.strength)</td>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <tbody>
+          <tr>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="footer" class="footer">
+  </div>
+</div>
+</body>
+</html>

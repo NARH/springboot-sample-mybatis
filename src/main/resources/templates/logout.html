@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<body>
+  <form id="logoutForm" action="/logout" method="POST" th:action="@{/logout}">
+    <input type="submit" name="logout" value="logout" />
+  </form>
+  <script src="/js/jquery.min.js"></script>
+  <script type="text/javascript">
+<!--
+  $(document).ready(function() {
+    $('#logoutForm').submit();
+  });
+-->
+  </script>
+</body>
+</html>

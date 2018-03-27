@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>ログイン</title>
+  <link href="css/bukiya.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="container">
+  <div id="header" class="header">
+    <h1>bukiya</h1>
+  </div>
+  <div id="body" class="login_panel">
+    <p>Sign-In</p>
+    <form action="Login" method="post" th:action="@{Login}">
+      <table class="table_form">
+        <tbody>
+          <tr>
+          <th>ID</th>
+          <td><input type="text" name="username"/></td>
+          </tr>
+          <tr>
+          <th>pass</th>
+          <td><input type="password" name="password"/></td>
+          </tr>
+        </tbody>
+      </table>
+      <input class="common_button" type="submit" name="submit"  value="ログイン"/>
+    </form>
+  </div>
+  <div id="footer" class="footer">
+  </div>
+</div>
+</body>
+</html>

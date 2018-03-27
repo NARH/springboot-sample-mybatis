@@ -1,0 +1,34 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    root: WARN
+    org.springframework.web: WARN
+    org.springframework.security: WARN
+    org.mybatis: DEBUG
+    com.github.narh.sample.mybatis: DEBUG
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: 
+    driverClassName: org.h2.Driver
+    schema: classpath:import.sql
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  thymeleaf:
+    cache: false
+    
+mybatis:
+  type-aliases-package: com.github.narh.sample.mybatis.domain.model
+  type-handlers-package: com.github.narh.sample.mybatis.domain.type
+  mapper-locations: classpath*:/META-INF/mybatis/mappers/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
