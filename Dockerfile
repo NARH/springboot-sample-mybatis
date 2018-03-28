@@ -1,29 +1,51 @@
+########################################################################################
+# Copyright (c) 2018, NARH https://github.com/NARH
+# All rights reserved.
+#
+#  Redistribution and use in source and binary forms, with or without
+#  modification, are permitted provided that the following conditions are met:
+#  * Redistributions of source code must retain the above copyright notice,
+#    this list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#  * Neither the name of the copyright holder nor the names of its contributors
+#    may be used to endorse or promote products derived from this software
+#    without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+########################################################################################
+
 # use alpine as base image
 FROM openjdk:8-jdk-alpine
 
-RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories
-RUN apk update --no-cache
-RUN apk add openrc --no-cache
-RUN apk add spring-boot-openrc --no-cache
+RUN apk add bash --no-cache
+RUN ln -fs /bin/bash /bin/sh
+
+# Run the image as a non-root user
+RUN adduser -D myuser
+USER myuser
 
 # create directory for application
-RUN mkdir /app
-WORKDIR /app
+WORKDIR /opt/webapp
 
+# application name
+ENV APPLICATION_NAME springboot-sample-mybatis-boot
 # jar target
-ENV JAR_TARGET "build/libs/springboot-sample-mybatis-boot.war"
+ENV JAR_TARGET ${APPLICATION_NAME}.war
+# port number
 
-ADD ${JAR_TARGET} /app/springboot-sample-mybatis-boot.war
-ADD springboot-sample-mybatis-boot.conf /app/springboot-sample-mybatis-boot.conf
-ADD springboot-sample-mybatis-boot.rc.conf /etc/conf.d/springboot-sample-mybatis-boot
-RUN /bin/ln -s /etc/init.d/spring-boot /etc/init.d/springboot-sample-mybatis-boot
-RUN mkdir -p /run/openrc/
-RUN touch /run/openrc/softlevel
+ADD build/libs/${JAR_TARGET} /opt/webapp/${JAR_TARGET}
 
 # set entrypoint to execute spring boot application
-#ENTRYPOINT ["/etc/init.d/springboot-sample-mybatis-boot","start"]
-#ENTRYPOINT ["rc-service","springboot-sample-mybatis-boot","start"]
-#ENTRYPOINT ["sh","-c","java -jar /app/springboot-sample-mybatis-boot.war"]
-
-EXPOSE 8080
-CMD "rc-update add springboot-sample-mybatis-boot boot"
+CMD java -jar /opt/webapp/${JAR_TARGET} --server.port=${PORT}

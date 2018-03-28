@@ -77,6 +77,24 @@ http://loalhost:8080/h2-console でデータベース操作が可能です。
 - src/test/java Junit テストコード
 - src/test/resources/ 未使用
 
+## デプロイ
+
+### heroku にデプロイ
+
+  heroku container にデプロイできる Dockerfile を用意しました。
+
+  docker for mac で検証しています。
+  docker および heroku CLI をインストールした後に以下のコマンドを実行するとデプロイできます。
+
+  ```
+  $ heroku container:login
+  $ heroku create
+  $ heroku container:push web
+  $ heroku open
+
+  ```
+
+
 ## 謝辞
 
   BIBENDUM (基本コンセプト・データ提供）
