@@ -83,7 +83,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <script src="/js/pagination.min.js"></script>
     <script lang="JavaScript" th:inline="javascript">
     $('#pagination-container').pagination({
-        dataSource: 'http://localhost:8080/WeaponList/page'
+        dataSource: '/WeaponList/page'
       , locator: 'weapons'
       , totalNumberLocator: function(response) {
           return response.recordSize;
