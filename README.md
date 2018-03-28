@@ -86,11 +86,15 @@ http://loalhost:8080/h2-console でデータベース操作が可能です。
   docker for mac で検証しています。
   docker および heroku CLI をインストールした後に以下のコマンドを実行するとデプロイできます。
 
+  アプリケーション名を foobar-1234 としています。
+  アプリケーション名は heroku サービス内で一意である必要があります。
+
   ```
+  $ heroku login
   $ heroku container:login
-  $ heroku create
-  $ heroku container:push web
-  $ heroku open
+  $ heroku create foobar-1234
+  $ heroku container:push web -a foobar-1234
+  $ heroku open -a foobar-1234
 
   ```
 
