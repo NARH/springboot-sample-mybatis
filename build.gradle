@@ -51,6 +51,10 @@ bootRepackage {
   classifier = 'boot'
 }
 
+springBoot {
+  executable = true
+}
+
 eclipse {
   project {
     natures "org.springsource.ide.eclipse.gradle.core.nature"
