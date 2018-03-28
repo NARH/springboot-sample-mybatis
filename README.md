@@ -94,6 +94,13 @@ http://loalhost:8080/h2-console でデータベース操作が可能です。
 
   ```
 
+  ローカルでdocker を起動する際は環境変数PORTにポート番号（例:8080）を指定してください。
+
+  ```
+  $ cd springboot-sample-mybatis
+  $ docker build .
+  $ docker run --rm -it -e PORT=8080 <イメージID>
+  ```
 
 ## 謝辞
 
