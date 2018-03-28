@@ -28,6 +28,7 @@ package com.github.narh.sample.mybatis;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.extern.slf4j.Slf4j;
@@ -47,10 +48,12 @@ public class WebController {
    * @param accountDetails ログイン情報
    * @return 一覧ページテンプレート
    */
-  @RequestMapping("/WeaponList")
-  public String WeaponList(@AuthenticationPrincipal AccountDetails accountDetails) {
+  @RequestMapping({"/WeaponList", "/"})
+  public String WeaponList(@AuthenticationPrincipal AccountDetails accountDetails, Model model) {
     if(log.isDebugEnabled()) log.debug(((AccountDetails) accountDetails).getUser().toString());
 
+    // ログインユーザをモデルに設定する
+    model.addAttribute("user", (((AccountDetails)accountDetails).getUser()));
     return "weapon_list";
   }
 

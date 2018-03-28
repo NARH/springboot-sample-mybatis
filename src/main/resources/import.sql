@@ -85,18 +85,19 @@ CREATE TABLE JOB_CATEGORY_REFERENCE(
 -- データ登録 職業マスター
 INSERT INTO JOB_MASTER(CODE,NAME,CURSE) VALUES
   ('01','勇者'  ,FALSE)
-, ('02','魔導士',FALSE)
-, ('03','僧侶'  ,FALSE)
-, ('04','魔剣士',TRUE)
-, ('05','盗賊'  ,TRUE)
+, ('02','戦士'  ,FALSE)
+, ('03','魔導士',FALSE)
+, ('04','僧侶'  ,FALSE)
+, ('05','魔剣士',TRUE)
+, ('06','盗賊'  ,TRUE)
 ;
 
 -- データ登録 会員マスター
 INSERT INTO USERS(USERNAME,PASSWORD,NAME,JOB,STRENGTH,ENABLED) VALUES
   ('001@example.com','$2a$10$DrBnpIi7xp4ASZvXnPMqKO6CKBlVUO1N7Pw99XEulYx9pMWzqOyHq','オリバー','01',50,TRUE)
-, ('002@example.com','$2a$10$DrBnpIi7xp4ASZvXnPMqKO6CKBlVUO1N7Pw99XEulYx9pMWzqOyHq','ハリー','01',100,TRUE)
-, ('003@example.com','$2a$10$DrBnpIi7xp4ASZvXnPMqKO6CKBlVUO1N7Pw99XEulYx9pMWzqOyHq','ジャック','02',30,TRUE)
-, ('004@example.com','$2a$10$DrBnpIi7xp4ASZvXnPMqKO6CKBlVUO1N7Pw99XEulYx9pMWzqOyHq','チャーリー','02',80,TRUE)
+, ('002@example.com','$2a$10$DrBnpIi7xp4ASZvXnPMqKO6CKBlVUO1N7Pw99XEulYx9pMWzqOyHq','ハリー','02',100,TRUE)
+, ('003@example.com','$2a$10$DrBnpIi7xp4ASZvXnPMqKO6CKBlVUO1N7Pw99XEulYx9pMWzqOyHq','ジャック','03',30,TRUE)
+, ('004@example.com','$2a$10$DrBnpIi7xp4ASZvXnPMqKO6CKBlVUO1N7Pw99XEulYx9pMWzqOyHq','チャーリー','06',80,TRUE)
 ;
 
 -- データ登録 権限
@@ -151,11 +152,13 @@ INSERT INTO WEAPON_CATEGORY(CODE, NAME) VALUES
 INSERT INTO JOB_CATEGORY_REFERENCE(JOB,CATEGORY) VALUES
   ('01','01')
 , ('01','03')
-, ('02','02')
+, ('02','01')
+, ('02','03')
 , ('03','02')
-, ('03','03')
-, ('04','01')
+, ('04','02')
 , ('04','03')
 , ('05','01')
+, ('05','03')
+, ('06','01')
 , ('05','04')
 ;

@@ -35,6 +35,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * セキュリティー設定
@@ -84,16 +85,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers("/css/**").permitAll()       // /css/** は認証不要
       .antMatchers("/images/**").permitAll()    // /images/** は認証不要
       .antMatchers("/js/**").permitAll()        // /js/** は認証不要
+      .antMatchers("/Login**").permitAll()        // Login 画面は認証不要
       .anyRequest().authenticated();            // その他は認証対象
 
     /* ログインURL*/
     http.formLogin()
       .loginPage("/Login")
-      .defaultSuccessUrl("/WeaponList", true)
-      .failureForwardUrl("/Login?error").permitAll();
+      .failureUrl("/Login?error")
+      .defaultSuccessUrl("/", true).permitAll();
 
     /* ログアウトURL*/
     http.logout()
-      .logoutUrl("/Logout").permitAll();
+      .logoutUrl("/Logout")
+      .clearAuthentication(true)
+      .logoutRequestMatcher(new AntPathRequestMatcher("/Logout"))
+      .invalidateHttpSession(true)
+      .permitAll();
+
+    /* remember-me*/
+    http.rememberMe().disable();
   }
 }

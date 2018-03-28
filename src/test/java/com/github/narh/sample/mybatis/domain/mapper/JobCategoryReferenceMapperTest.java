@@ -72,7 +72,7 @@ public class JobCategoryReferenceMapperTest {
 
     Job job = results.get(0).getJob();
     assertThat("職業コードが 02であること", job.getCode(), is("02"));
-    assertThat("職業が魔導士であること", job.getName(), is("魔導士"));
+    assertThat("職業が戦士であること", job.getName(), is("戦士"));
     assertThat("職業が呪い利用可否がfalseであること", job.isCurse(), is(false));
 
     Category category = results.get(0).getCategory();

@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.narh.sample.mybatis.domain.mapper.WeaponMapper;
@@ -61,12 +62,13 @@ public class APIController {
    * @return 一覧ページテンプレート
    */
   @RequestMapping("/WeaponList/page") @ResponseBody
-  public WeaponPage WeaponList(@AuthenticationPrincipal AccountDetails accountDetails) {
+  public WeaponPage WeaponList(@AuthenticationPrincipal AccountDetails accountDetails
+      , @RequestParam int pageSize, @RequestParam int pageNumber) {
     if(log.isDebugEnabled()) log.debug(((AccountDetails) accountDetails).getUser().toString());
     String jobCode = ((AccountDetails) accountDetails).getUser().getJob().getCode();
     WeaponPage page = new WeaponPage();
     try {
-      List<Weapon> weapons = weaponMapper.findByJob(jobCode, 3, 0);
+      List<Weapon> weapons = weaponMapper.findByJob(jobCode, pageSize, (pageNumber-1)*pageSize);
       long recordSize = weaponMapper.countByJob(jobCode);
       page.setRecordSize(Integer.valueOf(Long.toString(recordSize)));
       page.setWeapons(weapons);

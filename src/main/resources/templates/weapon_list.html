@@ -1,48 +1,143 @@
 <!DOCTYPE html>
+<!--/*
+Copyright (c) 2018, NARH https://github.com/NARH
+All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+ * Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+ * Neither the name of the copyright holder nor the names of its contributors
+   may be used to endorse or promote products derived from this software
+   without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/-->
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
-<head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<title>武器屋 武器一覧</title>
-<meta charset="utf-8"/>
-<meta name="description" content=""/>
-<meta name="author" content=""/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<!--[if lt IE 9]>
-<script src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
-<link rel="shortcut icon" href=""/>
-<link href="/css/bukiya.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
-<div id="container">
-  <div id="header" class="header">
-  </div>
-  <div id="body">
-    <div id="member_info" class="member_info">
-      <p>現在の強さ:member_info.strength</p>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>springboot-mybatis-sample</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/1-col-portfolio.css" rel="stylesheet">
+    <link href="/css/pagination.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">○×△の街の武器屋</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-brand" th:text="|ようこそ${user.job.name}&nbsp;${user.name}様|">ようこそ(ユーザー名)様</div>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/NARH">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/Logout" th:href="@{/Logout}">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+      <!-- Page Heading -->
+      <h1 class="my-4">武器一覧
+        <small th:text="|${user.job.name}&nbsp;にピッタリの武器を紹介します|">あなたにピッタリの武器を紹介します</small>
+      </h1>
+
+      <div id="data-container"></div>
+      <!-- Pagination -->
+      <div id="pagination-container" class="pagination justify-content-center"></div>
     </div>
-    <div id="weapon_list" class="weapon_list">
-      <table>
-        <tbody>
-          <tr>
-            <td></td>
-            <td><a href="WeaponDetail">weapon.name</a></td>
-            <td>weapon.categoryName</td>
-            <td>weapon.strength + member_info.strength (+ weapon.strength)</td>
-          </tr>
-        </tbody>
-      </table>
-      <table>
-        <tbody>
-          <tr>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div id="footer" class="footer">
-  </div>
-</div>
-</body>
+    <!-- /.container -->
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; https://github.com/NARH 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+    <!-- Bootstrap core JavaScript -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/pagination.min.js"></script>
+    <script lang="JavaScript" th:inline="javascript">
+    $('#pagination-container').pagination({
+        dataSource: 'http://localhost:8080/WeaponList/page'
+      , locator: 'weapons'
+      , totalNumberLocator: function(response) {
+          return response.recordSize;
+      }
+      , pageSize: 4
+      , pageRange: 1
+      , className: 'pagination justify-content-center paginationjs-theme-blue'
+      , ulClassName: "pagination justify-content-center"
+      , callback: function(data, pagination) {
+        var html = function() {
+        	var username = /*[[${user.name}]]*/ "○○";
+        	var strength = /*[[${user.strength}]]*/ "○○";
+        	var html = '<ul>';
+            $.each(data, function(index, item){
+                html += '<div class="row">';
+                html += '<div class="col-md-7">';
+                html += '<a href="#"><img src="http://placehold.it/700x300" alt="" class="img-fluid rounded mb-3 mb-md-0"></a>';
+                html += '</div>';
+                html += '<div class="col-md-5">';
+                html += '<h3>' + item.name + '</h3>';
+                html += '<p>分類:' + item.category.name +'</p>';
+                html += '<p>攻撃力:' + item.strength +'&nbsp;pt</p>';
+                if(item.curse)
+                  html += '<p><span style="color:#dc3545">注意:</span>呪われています</p>';
+                html += '<a class="btn btn-primary" data-toggle="modal" data-target="#FittingModal' + item.code +'">試着する</a>'
+                html += '</div>';
+                html += '<div class="modal fade" id="FittingModal' + item.code + '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">';
+                html += '<div class="modal-dialog" role="document">';
+                html += '<div class="modal-content">';
+                html += '<div class="modal-header">';
+                html += '<h5 class="modal-title" id="exampleModalLabel">' + username + 'さんの試着</h5>';
+                html += '<button class="close" type="button" data-dismiss="modal" aria-label="Close">';
+                html += '<span aria-hidden="true">×</span>';
+                html += '</button>';
+                html += '</div>';
+                html += '<div class="modal-body">';
+                html += '<p>攻撃力がトータル' + (strength + item.strength) + 'ptになります</p>';
+                if(item.curse)
+                  html += '<p><span style="color:#dc3545">注意:</span>呪われます</p>';
+                html += '</div>';
+                html += '<div class="modal-footer">';
+                html += '<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                html += '<hr>';
+            });
+            html += '</ul>';
+            return html;
+        }
+        $('#data-container').html(html);
+      }});
+    </script>
+  </body>
 </html>

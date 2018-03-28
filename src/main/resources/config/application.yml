@@ -23,6 +23,8 @@ spring:
         web-allow-others: true
   thymeleaf:
     cache: false
+    mode: LEGACYHTML5
+    encoding: UTF-8
     
 mybatis:
   type-aliases-package: com.github.narh.sample.mybatis.domain.model

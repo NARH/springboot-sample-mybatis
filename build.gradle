@@ -38,6 +38,7 @@ dependencies {
   compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
   compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:${mybatisSpringBootStarterVersion}")
   compile("org.projectlombok:lombok:1.16+")
+  compile("net.sourceforge.nekohtml:nekohtml:1.9.15+")
 
   compile("com.h2database:h2")
 
