@@ -45,6 +45,12 @@ dependencies {
   testCompile("org.springframework.boot:spring-boot-starter-test")
   testCompile("org.mybatis.spring.boot:mybatis-spring-boot-starter-test:${mybatisSpringBootStarterVersion}")
 }
+compileJava {
+    options.encoding = "$defaultEncoding"
+}
+compileTestJava {
+    options.encoding = "$defaultEncoding"
+}
 
 bootRepackage {
   mainClass = 'com.github.narh.sample.mybatis.Application'
@@ -53,6 +59,10 @@ bootRepackage {
 
 springBoot {
   executable = true
+}
+
+bootRun {
+  jvmArgs = [ "-Dfile.encoding=$defaultEncoding" ]
 }
 
 eclipse {
