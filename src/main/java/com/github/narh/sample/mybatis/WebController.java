@@ -51,7 +51,7 @@ public class WebController {
   @RequestMapping({"/WeaponList", "/"})
   public String WeaponList(@AuthenticationPrincipal AccountDetails accountDetails, Model model) {
     if(log.isDebugEnabled()) log.debug(((AccountDetails) accountDetails).getUser().toString());
-
+    log.debug("task completed.");
     // ログインユーザをモデルに設定する
     model.addAttribute("user", (((AccountDetails)accountDetails).getUser()));
     return "weapon_list";

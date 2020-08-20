@@ -25,6 +25,9 @@ plugins {
 apply plugin: 'war'
 apply plugin: 'io.spring.dependency-management'
 // apply plugin: 'org.springframework.boot'
+// pluginsに載せてよいのは以下の2つ
+//- Gradle Core Plugins (plugin is not in 'org.gradle' namespace)
+//- Plugin Repositories (plugin dependency must include a version number for this source)
 
 sourceCompatibility = "$javaVersion" // -source
 targetCompatibility = "$javaVersion" // -target
@@ -37,15 +40,17 @@ repositories {
 dependencies {
   compile("org.springframework.boot:spring-boot-starter-web")
   compile("org.springframework.boot:spring-boot-starter-security")
-  compile("org.springframework.boot:spring-boot-starter-thymeleaf")
   compile("org.springframework.boot:spring-boot-devtools")
+
+  compile("org.springframework.boot:spring-boot-starter-thymeleaf")
   compile("org.thymeleaf:thymeleaf-spring5:3.0.11.RELEASE")
   compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
+  compile("net.sourceforge.nekohtml:nekohtml:1.9.15+")
+
   compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:${mybatisSpringBootStarterVersion}")
+
   compileOnly("org.projectlombok:lombok:1.18.12")
   annotationProcessor("org.projectlombok:lombok:1.18.12")
-  compile("net.sourceforge.nekohtml:nekohtml:1.9.15+")
-  implementation 'org.springframework.boot:spring-boot-starter-logging'
   implementation 'org.slf4j:slf4j-api:1.7.25'
 
   compile("mysql:mysql-connector-java:6.0.6")
